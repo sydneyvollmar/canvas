@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Drawing Area</title>
+<!-- You can add your style here rather than in an external style sheet. -->
+<style>
+	canvas {
+	    border:5px solid #d3d3d3;
+	    background-color: #f1f1f1;
+	    display: block;
+	}
+
+</style>
+</head>
+<body>
+    <!-- DO NOT MODIFY THIS HTML -->
+    <canvas id = "myCanvas" width = "350" height = "500"  ></canvas>
+    <input type = "color" id = "picker"/>
+
+		<script>
+
+			var canvas = document.getElementById("myCanvas");
+			var ctx = canvas.getContext("2d");
+
+			// starts off on color of color picker
+			var colorPicker = document.getElementById("picker");
+			var color = colorPicker.value;
+
+			// used later for stopping and starting drawing with arrow keys
+			var drawEnabled = true;
+
+			ctx.canvas.width = window.innerWidth * 0.8;
+			ctx.canvas.height = window.innerWidth * 0.8;
+
+			// actually draws path after getting coordinates from mousemove listener
+			function draw(posX, posY) {
+				if (drawEnabled) {
+					ctx.beginPath();
+					ctx.arc(posX, posY, 10, 0, 2*Math.PI);
+				}
+			}
+
+			myCanvas.addEventListener(
+				"mousemove", function (e) {
+					ctx.fillStyle = color;
+					ctx.fill();
+					console.log(e.x, e.y);
+					let posX = e.x;
+					let posY = e.y;
+					draw(posX, posY);
+				});
+
+			// turns green
+			window.addEventListener(
+			"keydown", function (e) {
+				// will give key values no matter what key pressed
+				console.log(e);
+
+				if (e.keyCode == 71) {
+				console.log("GREEN");
+				color = "green";
+				}
+			});
+
+			// turns blue
+			window.addEventListener(
+			"keydown", function (e) {
+				if (e.keyCode == 66) {
+				console.log("BLUE");
+				color = "blue";
+			}
+			});
+
+			// turns yellow
+			window.addEventListener(
+			"keydown", function (e) {
+				if (e.keyCode == 89) {
+				console.log("YELLOW");
+				color = "yellow";
+			}
+			});
+
+			// turns red
+			window.addEventListener(
+			"keydown", function (e) {
+				if (e.keyCode == 82) {
+				console.log("RED");
+				color = "red";
+			}
+			});
+
+			// stop drawing when up arrow pressed
+			window.addEventListener(
+			"keydown", function (e) {
+				if (e.keyCode == 38) {
+					console.log("STOP DRAWING");
+					if (drawEnabled) {
+						drawEnabled = false;
+					}
+				}
+			});
+
+			// start drawing again when down arrow pressed
+			window.addEventListener(
+				"keydown", function(e){
+					if (e.keyCode == 40) {
+						console.log("START DRAWING");
+						if (!drawEnabled) {
+							drawEnabled = true;
+						}
+					}
+				}
+			);
+
+			// clears canvas with space key
+			window.addEventListener(
+				"keydown", function(e) {
+					if (e.keyCode == 32) {
+						console.log("CLEAR");
+						ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+					}
+				});
+
+			// color picker updating color on canvas
+			colorPicker.addEventListener(
+				"change", function(e) {
+					console.log(this.value);
+					color = this.value;
+				}
+			)
+
+		</script>
+</body>
+</html>
